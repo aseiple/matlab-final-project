@@ -58,7 +58,6 @@ handles.output = hObject;
  
 % Update handles structure
 global ship;
-global currentValue;
 
 guidata(hObject, handles);
 set(handles.uitable1, 'ColumnWidth', {30});
@@ -82,7 +81,7 @@ for i=1:25
         end
     end
 end
-map{8,1} = '!=>'
+map{8,1} = '>'
 handles.map = map;
 set(handles.uitable1,'Data',map);
 guidata(hObject, handles);
