@@ -61,6 +61,7 @@ global ship;
 global currentValue;
 
 guidata(hObject, handles);
+set(handles.uitable1, 'ColumnWidth', {30});
 ship.row = 8;
 ship.col = 1;
 ship.speed = 1;
@@ -70,8 +71,8 @@ ship.speed = 1;
 %2 is moving to the left
 %3 is moving to the top
 ship.direction = 0;
-map = cell(16,25);
-for i=1:16
+map = cell(25,25);
+for i=1:25
     for j=1:25
         asteroidChance=rand;
         if asteroidChance <= .1
@@ -145,7 +146,7 @@ while gameOver
         end
     end
     if ship.direction == 1
-        if ship.row ~= 16
+        if ship.row ~= 25
             map = handles.map;
             hasCrashed = crashCheck(map,ship);
             if(~hasCrashed)
