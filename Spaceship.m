@@ -134,7 +134,7 @@ while gameOver
     if ship.direction == 0
         if ship.col ~= 25
             map = handles.map;
-            hasCrashed = crashCheck(map,ship);
+            hasCrashed = crashCheck(map,ship.row,ship.col+1);
             if(~hasCrashed)
                 map(ship.row,ship.col) = {'0'};
                 map(ship.row,ship.col + 1) = {'!=>'};
@@ -148,7 +148,7 @@ while gameOver
     if ship.direction == 1
         if ship.row ~= 25
             map = handles.map;
-            hasCrashed = crashCheck(map,ship);
+            hasCrashed = crashCheck(map,ship.row+1,ship.col);
             if(~hasCrashed)
                 map(ship.row,ship.col) = {'0'};
                 map(ship.row + 1,ship.col) = {'!=>'};
@@ -162,7 +162,7 @@ while gameOver
     if ship.direction == 2
         if ship.col ~= 1
             map = handles.map;
-            hasCrashed = crashCheck(map,ship);
+            hasCrashed = crashCheck(map,ship.row,ship.col-1);
             if(~hasCrashed)
                 map(ship.row,ship.col) = {'0'};
                 map(ship.row,ship.col - 1) = {'!=>'};
@@ -176,7 +176,7 @@ while gameOver
     if ship.direction == 3
         if ship.row ~= 1
             map = handles.map;
-            hasCrashed = crashCheck(map,ship);
+            hasCrashed = crashCheck(map,ship.row-1,ship.col);
             if(~hasCrashed)
                 map(ship.row,ship.col) = {'0'};
                 map(ship.row - 1,ship.col) = {'!=>'};
@@ -219,10 +219,9 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-function hit = crashCheck(map, ship)
-    position = [ship.row,ship.col];
+function hit = crashCheck(map, row, col)
     
-    if(isequal(map(position),'1'))
+    if(strcmp(map(row,col),'1'))
         hit = true;
         button = questdlg('Your spaceship has crashed! Would you like to play again?', 'You have crashed!', 'Yes', 'No', 'Yes');
         if strcmpi(button, 'Yes')
