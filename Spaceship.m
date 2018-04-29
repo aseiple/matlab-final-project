@@ -71,7 +71,6 @@ ship.speed = 1;
 %3 is moving to the top
 ship.direction = 0;
 map = cell(16,25);
-<<<<<<< HEAD
 for i=1:16
     for j=1:25
         asteroidChance=rand;
@@ -83,11 +82,8 @@ for i=1:16
     end
 end
 map{8,1} = '!=>'
-=======
-map = num2cell(randi([0 1], 16,25));
 currentValue = map{8,1};
 map{8,1} = '!=>';
->>>>>>> 62303f938fef8006641052e43be051f73f320250
 handles.map = map;
 set(handles.uitable1,'Data',map);
 guidata(hObject, handles);
@@ -165,6 +161,7 @@ while gameOver
     if ship.direction == 2
         if ship.col ~= 1
             map = handles.map;
+            hasCrashed = crashCheck(map,ship);
             if(~hasCrashed)
                 map(ship.row,ship.col) = {'0'};
                 map(ship.row,ship.col - 1) = {'!=>'};
@@ -178,6 +175,7 @@ while gameOver
     if ship.direction == 3
         if ship.row ~= 1
             map = handles.map;
+            hasCrashed = crashCheck(map,ship);
             if(~hasCrashed)
                 map(ship.row,ship.col) = {'0'};
                 map(ship.row - 1,ship.col) = {'!=>'};
