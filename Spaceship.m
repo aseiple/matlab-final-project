@@ -83,8 +83,6 @@ for i=1:25
     end
 end
 map{8,1} = '!=>'
-currentValue = map{8,1};
-map{8,1} = '!=>';
 handles.map = map;
 set(handles.uitable1,'Data',map);
 guidata(hObject, handles);
@@ -104,7 +102,6 @@ varargout{1} = handles.output;
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
 global ship;
-global currentValue;
 global gameOver;
 gameOver = true;
 while gameOver
@@ -213,10 +210,11 @@ function hit = crashCheck(map, row, col)
         hit = true;
         button = questdlg('Your spaceship has crashed! Would you like to play again?', 'You have crashed!', 'Yes', 'No', 'Yes');
         if strcmpi(button, 'Yes')
-            newGame_Callback;
+            reset;
         else
-            close(Spaceship.fig);
+            close;
         end
     else
         hit = false;
     end
+    
