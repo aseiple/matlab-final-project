@@ -42,7 +42,6 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
-end
 % End initialization code - DO NOT EDIT
  
  
@@ -92,7 +91,6 @@ guidata(hObject, handles);
 % UIWAIT makes Spaceship wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 % --- Outputs from this function are returned to the command line.
-end
 function varargout = Spaceship_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
@@ -101,7 +99,7 @@ function varargout = Spaceship_OutputFcn(hObject, eventdata, handles)
  
 % Get default command line output from handles structure
 varargout{1} = handles.output;
-end
+ 
  
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
@@ -132,8 +130,6 @@ while gameOver
                 handles.ship = ship;
                 handles.map = map;
                 set(handles.uitable1,'Data',map);
-            else
-                break;
             end
         end
     end
@@ -148,8 +144,6 @@ while gameOver
                 handles.ship = ship;
                 handles.map = map;
                 set(handles.uitable1,'Data',map);
-            else
-                break;
             end
         end
     end
@@ -163,9 +157,7 @@ while gameOver
                 ship.col = ship.col - 1;
                 handles.ship = ship;
                 handles.map = map;
-                set(handles.uitable1,'Data',map); 
-            else
-                break;
+                set(handles.uitable1,'Data',map);    
             end
         end
     end
@@ -180,14 +172,11 @@ while gameOver
                 handles.ship = ship;
                 handles.map = map;
                 set(handles.uitable1,'Data',map);
-            else
-                break;
             end
         end
     end
     pause(1 / ship.speed);
 end 
-end
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -204,7 +193,7 @@ ship.speed = str2double(get(hObject,'String'));
     
 % Hints: get(hObject,'String') returns contents of edit1 as text
 %        str2double(get(hObject,'String')) returns contents of edit1 as a double
-end
+ 
  
 % --- Executes during object creation, after setting all properties.
 function edit1_CreateFcn(hObject, eventdata, handles)
@@ -225,9 +214,9 @@ function hit = crashCheck(map, row, col, hObject, eventdata, handles)
         hit = true;
         button = questdlg('Your spaceship has crashed! Would you like to play again?', 'You have crashed!', 'Yes', 'No', 'Yes');
         if strcmpi(button, 'Yes')
-            Spaceship_OpeningFcn(hObject, eventdata, handles);
+            Spaceship_OpeningFcn(hObject, eventdata, handles, varargin);
         else
-            close;
+            close(Spaceship.fig);
         end
     else
         hit = false;
