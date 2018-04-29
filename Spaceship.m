@@ -58,6 +58,8 @@ handles.output = hObject;
  
 % Update handles structure
 global ship;
+global currentValue;
+
 guidata(hObject, handles);
 ship.row = 8;
 ship.col = 1;
@@ -69,6 +71,7 @@ ship.speed = 1;
 %3 is moving to the top
 ship.direction = 0;
 map = cell(16,25);
+<<<<<<< HEAD
 for i=1:16
     for j=1:25
         asteroidChance=rand;
@@ -80,6 +83,11 @@ for i=1:16
     end
 end
 map{8,1} = '!=>'
+=======
+map = num2cell(randi([0 1], 16,25));
+currentValue = map{8,1};
+map{8,1} = '!=>';
+>>>>>>> 62303f938fef8006641052e43be051f73f320250
 handles.map = map;
 set(handles.uitable1,'Data',map);
 guidata(hObject, handles);
@@ -99,6 +107,7 @@ varargout{1} = handles.output;
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
 global ship;
+global currentValue;
 global gameOver;
 gameOver = true;
 while gameOver
@@ -111,55 +120,72 @@ while gameOver
         case 'w'
             ship.direction = 3;
         case 's'
-            ship.direction = 1;
         case 'q'
             ship.speed = ship.speed - 1;
         case 'e'
             ship.speed = ship.speed + 1;
+    case 'd'
+        ship.direction = 0;
+    case 'a'        
+        ship.direction = 2;
+    case 'w'
+        ship.direction = 3;
+    case 's'
+        ship.direction = 1;
         otherwise
     end
     if ship.direction == 0
         if ship.col ~= 25
             map = handles.map;
-            map(ship.row,ship.col) = {'0'};
-            map(ship.row,ship.col + 1) = {'!=>'};
-            ship.col = ship.col + 1;
-            handles.ship = ship;
-            handles.map = map;
-            set(handles.uitable1,'Data',map);
+            hasCrashed = crashCheck(map,ship);
+            if(~hasCrashed)
+                map(ship.row,ship.col) = {'0'};
+                map(ship.row,ship.col + 1) = {'!=>'};
+                ship.col = ship.col + 1;
+                handles.ship = ship;
+                handles.map = map;
+                set(handles.uitable1,'Data',map);
+            end
         end
     end
     if ship.direction == 1
         if ship.row ~= 16
             map = handles.map;
-            map(ship.row,ship.col) = {'0'};
-            map(ship.row + 1,ship.col) = {'!=>'};
-            ship.row = ship.row + 1;
-            handles.ship = ship;
-            handles.map = map;
-            set(handles.uitable1,'Data',map);
+            hasCrashed = crashCheck(map,ship);
+            if(~hasCrashed)
+                map(ship.row,ship.col) = {'0'};
+                map(ship.row + 1,ship.col) = {'!=>'};
+                ship.row = ship.row + 1;
+                handles.ship = ship;
+                handles.map = map;
+                set(handles.uitable1,'Data',map);
+            end
         end
     end
     if ship.direction == 2
         if ship.col ~= 1
             map = handles.map;
-            map(ship.row,ship.col) = {'0'};
-            map(ship.row,ship.col - 1) = {'!=>'};
-            ship.col = ship.col - 1;
-            handles.ship = ship;
-            handles.map = map;
-            set(handles.uitable1,'Data',map);    
+            if(~hasCrashed)
+                map(ship.row,ship.col) = {'0'};
+                map(ship.row,ship.col - 1) = {'!=>'};
+                ship.col = ship.col - 1;
+                handles.ship = ship;
+                handles.map = map;
+                set(handles.uitable1,'Data',map);    
+            end
         end
     end
     if ship.direction == 3
         if ship.row ~= 1
             map = handles.map;
-            map(ship.row,ship.col) = {'0'};
-            map(ship.row - 1,ship.col) = {'!=>'};
-            ship.row = ship.row - 1;
-            handles.ship = ship;
-            handles.map = map;
-            set(handles.uitable1,'Data',map);
+            if(~hasCrashed)
+                map(ship.row,ship.col) = {'0'};
+                map(ship.row - 1,ship.col) = {'!=>'};
+                ship.row = ship.row - 1;
+                handles.ship = ship;
+                handles.map = map;
+                set(handles.uitable1,'Data',map);
+            end
         end
     end
     pause(1 / ship.speed);
@@ -193,3 +219,18 @@ function edit1_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+function hit = crashCheck(map, ship)
+    position = [ship.row,ship.col];
+    
+    if(isequal(map(position),1))
+        hit = true;
+        button = questdlg('Your spaceship has crashed! Would you like to play again?', 'You have crashed!', 'Yes', 'No', 'Yes');
+        if strcmpi(button, 'Yes')
+            newGame_Callback;
+        else
+            close(Spaceship.fig);
+        end
+    else
+        hit = false;
+    end
