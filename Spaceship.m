@@ -59,7 +59,6 @@ handles.output = hObject;
  
 % Update handles structure
 global ship;
-global currentValue;
 
 guidata(hObject, handles);
 set(handles.uitable1, 'ColumnWidth', {30});
@@ -83,9 +82,7 @@ for i=1:25
         end
     end
 end
-map{8,1} = '!=>'
-currentValue = map{8,1};
-map{8,1} = '!=>';
+map{8,1} = '>'
 handles.map = map;
 set(handles.uitable1,'Data',map);
 guidata(hObject, handles);
@@ -106,7 +103,6 @@ end
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
 global ship;
-global currentValue;
 global gameOver;
 gameOver = true;
 while gameOver
