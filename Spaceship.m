@@ -125,7 +125,7 @@ while gameOver
             hasCrashed = crashCheck(map,ship.row,ship.col+1);
             if(~hasCrashed)
                 map(ship.row,ship.col) = {'0'};
-                map(ship.row,ship.col + 1) = {'!=>'};
+                map(ship.row,ship.col + 1) = {'<html><b color="#FF0000">&gt;</b></html>'};
                 ship.col = ship.col + 1;
                 handles.ship = ship;
                 handles.map = map;
@@ -139,7 +139,7 @@ while gameOver
             hasCrashed = crashCheck(map,ship.row+1,ship.col);
             if(~hasCrashed)
                 map(ship.row,ship.col) = {'0'};
-                map(ship.row + 1,ship.col) = {'!=>'};
+                map(ship.row + 1,ship.col) = {'<html><b color="#FF0000">v</b></html>'};
                 ship.row = ship.row + 1;
                 handles.ship = ship;
                 handles.map = map;
@@ -153,7 +153,7 @@ while gameOver
             hasCrashed = crashCheck(map,ship.row,ship.col-1);
             if(~hasCrashed)
                 map(ship.row,ship.col) = {'0'};
-                map(ship.row,ship.col - 1) = {'!=>'};
+                map(ship.row,ship.col - 1) = {'<html><b color="#FF0000">&lt;</b></html>'};
                 ship.col = ship.col - 1;
                 handles.ship = ship;
                 handles.map = map;
@@ -167,7 +167,7 @@ while gameOver
             hasCrashed = crashCheck(map,ship.row-1,ship.col);
             if(~hasCrashed)
                 map(ship.row,ship.col) = {'0'};
-                map(ship.row - 1,ship.col) = {'!=>'};
+                map(ship.row - 1,ship.col) = {'<html><b color="#FF0000">^</b></html>'};
                 ship.row = ship.row - 1;
                 handles.ship = ship;
                 handles.map = map;
