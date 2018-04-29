@@ -95,62 +95,64 @@ gameOver = true;
 while gameOver
     get(gcf,'CurrentCharacter')
     switch get(gcf,'CurrentCharacter')
-        case 'd'
-            ship.direction = 0;
-        case 'a'        
-            ship.direction = 2;
-        case 'w'
-            ship.direction = 3;
-        case 's'
-            ship.direction = 1;
-        case 'q'
-            ship.speed = ship.speed - 1;
-        case 'e'
-            ship.speed = ship.speed + 1;
+    case 'd'
+        ship.direction = 0;
+    case 'a'        
+        ship.direction = 2;
+    case 'w'
+        ship.direction = 3;
+    case 's'
+        ship.direction = 1;
         otherwise
     end
     if ship.direction == 0
         if ship.col ~= 25
             map = handles.map;
-            map(ship.row,ship.col) = {'0'};
-            map(ship.row,ship.col + 1) = {'!=>'};
-            ship.col = ship.col + 1;
-            handles.ship = ship;
-            handles.map = map;
-            set(handles.uitable1,'Data',map);
+            hasCrashed = crashCheck(map,ship);
+            if(~hasCrashed)
+                map(ship.row,ship.col + 1) = {'!=>'};
+                ship.col = ship.col + 1;
+                handles.ship = ship;
+                handles.map = map;
+                set(handles.uitable1,'Data',map);
+            end
         end
     end
     if ship.direction == 1
         if ship.row ~= 16
             map = handles.map;
-            map(ship.row,ship.col) = {'0'};
-            map(ship.row + 1,ship.col) = {'!=>'};
-            ship.row = ship.row + 1;
-            handles.ship = ship;
-            handles.map = map;
-            set(handles.uitable1,'Data',map);
+            hasCrashed = crashCheck(map,ship);
+            if(~hasCrashed)
+                map(ship.row + 1,ship.col) = {'!=>'};
+                ship.row = ship.row + 1;
+                handles.ship = ship;
+                handles.map = map;
+                set(handles.uitable1,'Data',map);
+            end
         end
     end
     if ship.direction == 2
         if ship.col ~= 1
             map = handles.map;
-            map(ship.row,ship.col) = {'0'};
-            map(ship.row,ship.col - 1) = {'!=>'};
-            ship.col = ship.col - 1;
-            handles.ship = ship;
-            handles.map = map;
-            set(handles.uitable1,'Data',map);    
+            if(~hasCrashed)
+                map(ship.row,ship.col - 1) = {'!=>'};
+                ship.col = ship.col - 1;
+                handles.ship = ship;
+                handles.map = map;
+                set(handles.uitable1,'Data',map);    
+            end
         end
     end
     if ship.direction == 3
         if ship.row ~= 1
             map = handles.map;
-            map(ship.row,ship.col) = {'0'};
-            map(ship.row - 1,ship.col) = {'!=>'};
-            ship.row = ship.row - 1;
-            handles.ship = ship;
-            handles.map = map;
-            set(handles.uitable1,'Data',map);
+            if(~hasCrashed)
+                map(ship.row - 1,ship.col) = {'!=>'};
+                ship.row = ship.row - 1;
+                handles.ship = ship;
+                handles.map = map;
+                set(handles.uitable1,'Data',map);
+            end
         end
     end
     pause(1 / ship.speed);
@@ -184,3 +186,18 @@ function edit1_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+function hit = crashCheck(map, ship)
+    position = [ship.row,ship.col];
+    
+    if(equals(map(position),1))
+        hit = true;
+        button = questdlg('Your spaceship has crashed! Would you like to play again?', 'You have crashed!', 'Yes', 'No', 'Yes');
+        if strcmpi(button, 'Yes')
+            newGame_Callback;
+        else
+            close(Spaceship.fig);
+        end
+    else
+        hit = false;
+    end
