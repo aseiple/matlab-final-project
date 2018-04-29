@@ -198,7 +198,7 @@ end
 function hit = crashCheck(map, ship)
     position = [ship.row,ship.col];
     
-    if(isequal(map(position),1))
+    if(isequal(map(position),'1'))
         hit = true;
         button = questdlg('Your spaceship has crashed! Would you like to play again?', 'You have crashed!', 'Yes', 'No', 'Yes');
         if strcmpi(button, 'Yes')
