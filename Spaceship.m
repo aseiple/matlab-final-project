@@ -69,7 +69,16 @@ ship.speed = 1;
 %3 is moving to the top
 ship.direction = 0;
 map = cell(16,25);
-map = num2cell(randi([0 1], 16,25));
+for i=1:16
+    for j=1:25
+        asteroidChance=rand;
+        if asteroidChance <= .1
+            map{i,j}='1';
+        else
+            map{i,j}='0';
+        end
+    end
+end
 map{8,1} = '!=>'
 handles.map = map;
 set(handles.uitable1,'Data',map);
