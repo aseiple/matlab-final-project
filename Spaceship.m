@@ -117,19 +117,7 @@ while gameOver
         case 'w'
             ship.direction = 3;
         case 's'
-        case 'q'
-            ship.speed = ship.speed - 1;
-        case 'e'
-            ship.speed = ship.speed + 1;
-    case 'd'
-        ship.direction = 0;
-    case 'a'        
-        ship.direction = 2;
-    case 'w'
-        ship.direction = 3;
-    case 's'
-        ship.direction = 1;
-        otherwise
+            ship.direction = 1;
     end
     if ship.direction == 0
         if ship.col ~= 25
