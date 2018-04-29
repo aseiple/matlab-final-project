@@ -58,6 +58,8 @@ handles.output = hObject;
  
 % Update handles structure
 global ship;
+global currentValue;
+
 guidata(hObject, handles);
 ship.row = 8;
 ship.col = 1;
@@ -70,7 +72,8 @@ ship.speed = 1;
 ship.direction = 0;
 map = cell(16,25);
 map = num2cell(randi([0 1], 16,25));
-map{8,1} = '!=>'
+currentValue = map{8,1};
+map{8,1} = '!=>';
 handles.map = map;
 set(handles.uitable1,'Data',map);
 guidata(hObject, handles);
@@ -90,6 +93,7 @@ varargout{1} = handles.output;
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
 global ship;
+global currentValue;
 global gameOver;
 gameOver = true;
 while gameOver
@@ -110,6 +114,7 @@ while gameOver
             map = handles.map;
             hasCrashed = crashCheck(map,ship);
             if(~hasCrashed)
+                map(ship.row,ship.col) = {'0'};
                 map(ship.row,ship.col + 1) = {'!=>'};
                 ship.col = ship.col + 1;
                 handles.ship = ship;
@@ -123,6 +128,7 @@ while gameOver
             map = handles.map;
             hasCrashed = crashCheck(map,ship);
             if(~hasCrashed)
+                map(ship.row,ship.col) = {'0'};
                 map(ship.row + 1,ship.col) = {'!=>'};
                 ship.row = ship.row + 1;
                 handles.ship = ship;
@@ -135,6 +141,7 @@ while gameOver
         if ship.col ~= 1
             map = handles.map;
             if(~hasCrashed)
+                map(ship.row,ship.col) = {'0'};
                 map(ship.row,ship.col - 1) = {'!=>'};
                 ship.col = ship.col - 1;
                 handles.ship = ship;
@@ -147,6 +154,7 @@ while gameOver
         if ship.row ~= 1
             map = handles.map;
             if(~hasCrashed)
+                map(ship.row,ship.col) = {'0'};
                 map(ship.row - 1,ship.col) = {'!=>'};
                 ship.row = ship.row - 1;
                 handles.ship = ship;
@@ -190,7 +198,7 @@ end
 function hit = crashCheck(map, ship)
     position = [ship.row,ship.col];
     
-    if(equals(map(position),1))
+    if(isequal(map(position),1))
         hit = true;
         button = questdlg('Your spaceship has crashed! Would you like to play again?', 'You have crashed!', 'Yes', 'No', 'Yes');
         if strcmpi(button, 'Yes')
