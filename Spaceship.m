@@ -62,6 +62,7 @@ global ship;
 
 guidata(hObject, handles);
 set(handles.uitable1, 'ColumnWidth', {30});
+%set the ship location and speed
 ship.row = 8;
 ship.col = 1;
 ship.speed = 1;
@@ -72,6 +73,8 @@ ship.speed = 1;
 %3 is moving to the top
 ship.direction = 0;
 map = cell(25,25);
+%randomly assign asteroids throughout the matrix, 10% chance of there being
+%an asteroid on any given cell
 for i=1:25
     for j=1:25
         asteroidChance=rand;
@@ -99,14 +102,18 @@ function varargout = Spaceship_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 end
- 
+ %Starts the game
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
 global ship;
 global gameOver;
 gameOver = true;
+%The loop upon which the game runs. Stops when a gameover state has  been r
+%eached
 while gameOver
     get(gcf,'CurrentCharacter')
+    %gets the latest keystroke from the player to determine the direction
+    %of the ship
     switch get(gcf,'CurrentCharacter')
         case 'd'
             ship.direction = 0;
@@ -117,6 +124,8 @@ while gameOver
         case 's'
             ship.direction = 1;
     end
+    %The following four statements move the ship in its current direction
+    %and check whether or not it has crashed
     if ship.direction == 0
         if ship.col ~= 25
             map = handles.map;
@@ -189,7 +198,7 @@ end
 % handles    structure with handles and user data (see GUIDATA)
  
  
- 
+ %Sets the speed of the ship
 function edit1_Callback(hObject, eventdata, handles)
 global ship
 get(hObject,'String')
@@ -214,7 +223,8 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 end
-
+%Helper function that determines whether or not the ship has crashed. If it
+%has it stops the game and displays a message
 function hit = crashCheck(map, row, col, hObject, eventdata, handles)
     
     if(strcmp(map(row,col),'1'))
